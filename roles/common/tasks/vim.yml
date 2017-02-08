@@ -1,0 +1,11 @@
+##
+# updates the APT package cache and install packages
+# servers necessary for web. also enables firewall
+##
+- name: install vim 
+  apt: 
+    name: vim 
+  sudo: yes
+
+- name: copy vimrc 
+  copy: src=../files/vimrc dest=/home/{{ deploy_user }}/.vimrc

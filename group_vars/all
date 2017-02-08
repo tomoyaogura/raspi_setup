@@ -1,0 +1,7 @@
+deploy_user: pi
+device_name: raspi_1
+local_git_key_dir: ~/.ssh/{{ device_name }}/{{ device_name }}_git_rsa
+
+# Optional
+# code_repository:
+# app_dir:

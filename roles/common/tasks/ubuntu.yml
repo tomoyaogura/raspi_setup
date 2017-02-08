@@ -1,0 +1,20 @@
+##
+# updates the APT package cache and install packages
+# servers necessary for web. also enables firewall
+##
+- apt: update_cache=yes
+  sudo: yes
+
+- name: ensure all standard packages are installed
+  apt: name={{item}}
+  sudo: yes
+  with_items:
+    - fail2ban
+    - python-virtualenv
+    - python-dev
+    - python-pip
+    - xclip
+
+- name: upgrade distro
+  apt: upgrade=dist
+  sudo: yes

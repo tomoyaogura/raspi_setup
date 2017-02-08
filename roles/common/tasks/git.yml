@@ -1,0 +1,20 @@
+###
+# Clones or pulls the repo from a public or private Git repository
+##
+- name: ensure Git is installed via the system package
+  apt: name=git-core state=present update_cache=yes
+  sudo: yes
+
+- name: create git key directory if it does not exist
+  file: path=/home/{{ deploy_user }}/.ssh/git_key state=directory
+
+- name: ensure deploy key is on remote server
+  copy: src={{ local_git_key_dir }}
+        dest=/home/{{ deploy_user }}/.ssh/git_key/{{ device_name }}_git_key
+        mode=0600 owner={{ deploy_user }}
+
+- name: clone or pull latest web app code
+  git: repo={{ code_repository }} dest={{ app_dir }}
+       key_file=/home/{{ deploy_user }}/.ssh/git_key/{{ device_name }}_git_key
+       accept_hostkey=yes
+  when: code_repository is defined and app_dir is defined

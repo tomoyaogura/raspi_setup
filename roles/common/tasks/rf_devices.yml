@@ -1,0 +1,27 @@
+##
+# Based off of https://www.samkear.com/hardware/control-power-outlets-wirelessly-raspberry-pi
+##
+- apt: update_cache=yes
+  sudo: yes
+
+- name: Download WiringPi
+  git:
+    repo: git://git.drogon.net/wiringPi
+    accept_hostkey: yes
+    dest: "{{ ansible_env.HOME }}/wiringPi"
+  sudo: yes
+ 
+- name: Download RFSniffer
+  git:
+    repo: https://github.com/timleland/rfoutlet.git
+    dest: /var/www/rfoutlet
+    accept_hostkey: yes
+  sudo: yes
+
+- name: Change permissions
+  file:
+    path: /var/www/rfoutlet/codesend
+    owner: root
+    group: root
+    mode: 4755
+  sudo: yes

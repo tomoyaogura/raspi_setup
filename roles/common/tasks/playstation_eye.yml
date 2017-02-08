@@ -1,0 +1,22 @@
+##
+# updates the APT package cache and install packages
+# servers necessary for web. also enables firewall
+##
+- apt: update_cache=yes
+  sudo: yes
+
+- name: ensure all standard packages are installed
+  apt: name={{item}}
+  sudo: yes
+  with_items:
+    - motion
+    - libav-tools 
+
+- name: Add alias in bashrc
+  shell: "alias ffmpeg=avconv >> ~/.bashrc" 
+
+- name: Modify conf files
+  shell: "sudo sed 's/height [0-9][0-9][0-9]/height 480/g' /etc/motion/motion.conf"
+
+- name: Modify conf files
+  shell: "sudo sed 's/width [0-9][0-9][0-9]/height 640/g' /etc/motion/motion.conf"
