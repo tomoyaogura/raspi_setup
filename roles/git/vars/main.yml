@@ -1,0 +1,2 @@
+ssh_key_name: raspi_github
+github_ssh: "~/.ssh/{{ ssh_key_name }}"

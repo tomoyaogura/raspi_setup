@@ -1,0 +1,15 @@
+###
+# This playbook deploys the whole application stack in this site.
+##
+- name: Apply Basic Setup to a Brand New Raspberry Pi Image
+  hosts: all
+  vars:
+    hostname: raspi-zero
+    applications: 
+      - { repo: 'https://github.com/tomoyaogura/Remote-Outlet.git', name: 'remote_outlet', roles: 'rf_devices' }
+
+  roles:
+    - hostname
+    - common
+    - git
+

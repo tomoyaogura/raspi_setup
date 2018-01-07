@@ -1,0 +1,24 @@
+---
+# Given a repo item, pull latest code, install requirements, and run any custom ansible script
+- name: clone or pull latest web app code
+  git: 
+    repo: "{{ app.repo }}" 
+    dest: "{{ ansible_env.HOME }}/{{ app.name }}"
+    key_file: "{{ ansible_env.HOME }}/.ssh/git_key/{{ ssh_key_name }}"
+    accept_hostkey: yes
+
+# Open Issue in Ansible
+- name: Add any app-specific roles
+  include_role: 
+    name: "rf_devices"
+  when: app.roles is defined
+
+- name: Check if repo requirements exist
+  stat: 
+    path: "{{ ansible_env.HOME}}/{{ app.name }}/requirements.txt"
+  register: requirements
+
+- name: Install any repo requirements
+  pip:
+    requirements: "{{ requirements.stat.path }}"
+  when: requirements.stat.exists

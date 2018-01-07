@@ -1,6 +1,7 @@
+# Install zsh
 - name: ensure needed packages installed 
   apt: name={{item}}
-  sudo: yes
+  become: yes
   with_items:
     - zsh 
     - git
@@ -8,13 +9,15 @@
 - name: Installing oh-my-zsh per user
   git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
-    dest: "/home/{{ deploy_user }}/.oh-my-zsh"
+    dest: "/home/{{ ansible_user }}/.oh-my-zsh"
 
 - name: Setting default shell per user
   user:
-    name: "{{ deploy_user }}"
+    name: "{{ ansible_user }}"
     shell: /bin/zsh
   become: yes
 
 - name: Copy default files
-  copy: src=../templates/zshrc dest=/home/{{ deploy_user }}/.zshrc
+  template: 
+    src: ../templates/zshrc 
+    dest: "/home/{{ ansible_user }}/.zshrc"

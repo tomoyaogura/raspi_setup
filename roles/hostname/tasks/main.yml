@@ -1,0 +1,19 @@
+---
+- name: Set the hostname on the node
+  shell: hostname {{ hostname }}
+  become: yes
+
+- name: Persist the hostname
+  lineinfile:
+    dest: /etc/hostname
+    regexp: .*
+    line: '{{ hostname }}'
+    state: present
+  become: yes
+
+- name: Add the hostname to hosts list
+  lineinfile:
+    dest: /etc/hosts
+    line: '127.0.0.1 {{ hostname }}'
+    state: present
+  become: yes

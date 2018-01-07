@@ -1,0 +1,26 @@
+###
+# This playbook deploys the whole application stack in this site.
+##
+---
+- name: Remotely reboot raspberry pi and wait for it to come back up
+  hosts: all
+
+  tasks:
+    - debug: 
+        msg: "Rebooting server {{ inventory_hostname}} {{ ansible_host }}"
+
+    - name: Reboot system
+      command: shutdown -r now "Ansible triggered reboot"
+      become: yes
+      ignore_errors: true
+
+    - name: Wait for reboot 
+      wait_for: 
+        host: "{{ ansible_host }}"
+        port: "{{ ansible_port }}"
+        state: started
+        delay: 15 
+      delegate_to: 127.0.0.1
+
+    - debug:
+        msg: "We're back again. Running on {{ ansible_host }}:{{ ansible_port }}"
